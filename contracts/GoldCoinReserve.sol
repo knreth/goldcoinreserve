@@ -93,7 +93,11 @@ contract GoldCoinReserve is ERC20, Ownable {
         require(balance >= amount, "GCR: not enough old GCR tokens");
 
         // Transfer old GCR to this contract
-        bool status = IERC20(oldGCR).transferFrom(msg.sender, address(this), amount);
+        bool status = IERC20(oldGCR).transferFrom(
+            msg.sender,
+            address(this),
+            amount
+        );
         require(status, "GCR: transfer from old GCR failed");
 
         // Transfer new tokens equivalent of old ones
@@ -107,7 +111,10 @@ contract GoldCoinReserve is ERC20, Ownable {
      * @param to address
      * @param amount number of tokens to withdraw
      */
-    function withdrawSwappedOldGCR(address to, uint256 amount) external onlyOwner {
+    function withdrawSwappedOldGCR(address to, uint256 amount)
+        external
+        onlyOwner
+    {
         require(oldGCR != address(0), "GCR: old GCR address not set");
         IERC20(oldGCR).transfer(to, amount);
     }
@@ -133,7 +140,8 @@ contract GoldCoinReserve is ERC20, Ownable {
         if ((transferLimit > 0) && (from != address(0)) && (to != address(0))) {
             // Both 'from' and 'to' addresses should not be in the whiltlist
             // to enforce the limit
-            if (!isWhitelisted(from) && !isWhitelisted(to)) _enforceTransferLimit(from, amount);
+            if (!isWhitelisted(from) && !isWhitelisted(to))
+                _enforceTransferLimit(from, amount);
         }
     }
 
@@ -146,7 +154,10 @@ contract GoldCoinReserve is ERC20, Ownable {
             uTransfer.lastTime = block.timestamp;
             uTransfer.perDayTransfer = amount;
         } else {
-            require((amount + uTransfer.perDayTransfer) <= transferLimit, "GCR: daily limit exceeds");
+            require(
+                (amount + uTransfer.perDayTransfer) <= transferLimit,
+                "GCR: daily limit exceeds"
+            );
             uTransfer.perDayTransfer += amount;
         }
     }

@@ -59,7 +59,7 @@ describe("GCRStaking", function() {
         expect(await this.staking.connect(this.user2).enterStaking('10000', BRONZE)).to.emit('Staked');
         expect((await this.gcr.balanceOf(this.user2.address)).toString()).to.equal('90000');
 
-        await expect(this.staking.connect(this.user2).withdrawStaking('0')).to.be.revertedWith('GCRStaking: plan not yet metured');
+        await expect(this.staking.connect(this.user2).withdrawStaking('0')).to.be.revertedWith('GCRStaking: plan not yet vested');
 
         for (i = 0; i < 30; i++) {
             advanceBlocks();
@@ -82,7 +82,7 @@ describe("GCRStaking", function() {
         expect(await this.staking.connect(this.user2).enterStaking('10000', BRONZE)).to.emit('Staked');
         expect((await this.gcr.balanceOf(this.user2.address)).toString()).to.equal('90000');
 
-        await expect(this.staking.connect(this.user2).withdrawStaking('0')).to.be.revertedWith('GCRStaking: plan not yet metured');
+        await expect(this.staking.connect(this.user2).withdrawStaking('0')).to.be.revertedWith('GCRStaking: plan not yet vested');
 
         for (i = 0; i < 30; i++) {
             advanceBlocks();
@@ -94,7 +94,7 @@ describe("GCRStaking", function() {
         expect((await this.gcr.balanceOf(this.user2.address)).toString()).to.equal('95500');
 
         // Try again to withdraw remaining, it should fail
-        await expect(this.staking.connect(this.user2).withdrawStaking('0')).to.be.revertedWith('GCRStaking: plan not yet metured');
+        await expect(this.staking.connect(this.user2).withdrawStaking('0')).to.be.revertedWith('GCRStaking: plan not yet vested');
 
         // Advance the block and try
         for (i = 0; i < 30; i++) {
